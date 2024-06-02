@@ -11,11 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { PostCategoryComponent } from './Components/post-category/post-category.component';
+import { PostProductComponent } from './Components/post-product/post-product.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
     AdminComponent,
     PostCategoryComponent,
+    PostProductComponent,
 
   ],
   imports: [
@@ -29,6 +32,7 @@ import { PostCategoryComponent } from './Components/post-category/post-category.
     MatInputModule,
     MatCardModule,
     MatIconModule,
+    MatSelectModule
 
   ]
 })

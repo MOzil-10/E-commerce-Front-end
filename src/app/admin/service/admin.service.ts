@@ -17,18 +17,38 @@ export class AdminService {
     private authState: AuthStateServiceService
   ) { }
 
-
   addCategory(categoryDto: any): Observable<any> {
     return this.createAuthorizationHeader().pipe(
       switchMap(headers => this.http.post(BASIC_URL + 'api/admin/category', categoryDto, { headers })),
       catchError((error) => {
-        // Handle error here (e.g., log, show error message)
+       
         console.error('Error adding category:', error);
-        return throwError(error); // Rethrow the error
+        return throwError(error);
+      })
+    );
+  }
+
+  getAllCategories(): Observable<any> {
+    return this.createAuthorizationHeader().pipe(
+      switchMap(headers => this.http.get(BASIC_URL + 'api/admin/categories', { headers })),
+      catchError((error) => {
+        
+        console.error('Error adding category:', error);
+        return throwError(error); 
       })
     );
   }
   
+  addProduct(productDto: any): Observable<any> {
+    return this.createAuthorizationHeader().pipe(
+      switchMap(headers => this.http.post(BASIC_URL + 'api/admin/product', productDto, { headers })),
+      catchError((error) => {
+       
+        console.error('Error adding category:', error);
+        return throwError(error);
+      })
+    );
+  }
 
   private createAuthorizationHeader(): Observable<HttpHeaders> {
     return this.authState.getToken().pipe(
