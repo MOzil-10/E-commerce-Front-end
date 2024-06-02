@@ -1,8 +1,40 @@
-<mat-toolbar color="primary" class="navbar">
-  <span class="navbar-brand">E-commerce</span>
-  <span class="spacer"></span>
-  <button mat-button routerLink="/order" routerLinkActive="active">Track Order</button>
-  <button mat-button routerLink="/register" routerLinkActive="active">Register</button>
-  <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
-</mat-toolbar>
+
+<div *ngIf="!isCustomerLoggedIn && !isAdminLoggedIn">
+  <mat-toolbar color="primary" class="navbar">
+    <span class="navbar-brand">E-commerce</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/order" routerLinkActive="active">Track Order</button>
+    <button mat-button routerLink="/register" routerLinkActive="active">Register</button>
+    <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
+  </mat-toolbar>
+</div>
+
+<div *ngIf="isAdminLoggedIn">
+  <mat-toolbar color="primary" class="navbar">
+    <span class="navbar-brand">E-commerce</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/adminDashboard" routerLinkActive="active">Dashboard</button>
+    <button mat-button routerLink="/analytics" routerLinkActive="active">Analytics</button>
+    <button mat-button routerLink="/category" routerLinkActive="active">Category</button>
+    <button mat-button routerLink="/product" routerLinkActive="active">Product</button>
+    <button mat-button routerLink="/orders" routerLinkActive="active">Orders</button>
+    <button mat-button routerLink="/postCoupons" routerLinkActive="active">Post Coupon</button>
+    <button mat-button routerLink="/coupons" routerLinkActive="active">Coupons</button>
+    <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
+  </mat-toolbar>
+</div>
+
+<div *ngIf="isCustomerLoggedIn">
+  <mat-toolbar color="primary" class="navbar">
+    <span class="navbar-brand">E-commerce</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/customerDashboard" routerLinkActive="active">Dashboard</button>
+    <button mat-button routerLink="/cart" routerLinkActive="active">Cart</button>
+    <button mat-button routerLink="/orders" routerLinkActive="active">Orders</button>
+    <button mat-button routerLink="/register" routerLinkActive="active">Wishlist</button>
+    <button mat-button routerLink="/profile" routerLinkActive="active">Profile</button>
+    <button mat-button (click)="logout()" routerLinkActive="active">Logout</button>
+  </mat-toolbar>
+</div>
+
 <router-outlet></router-outlet>

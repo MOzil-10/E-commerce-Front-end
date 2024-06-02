@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { UserStorageService } from '../storage/user-storage.service';
+import { AuthStateServiceService } from './auth-state-service.service';
+import { AuthResponse } from 'src/app/interface/auth-response.interface';
 
 const BASIC_URL = 'http://localhost:8080';
 
@@ -13,55 +14,43 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private userStorageService: UserStorageService
+    private authState: AuthStateServiceService
   ) { }
 
-  register(signupRequest: any): Observable<any> {
-    return this.http.post(BASIC_URL + '/signup', signupRequest);
-  }
-
-  // login(username: string, password: string): Observable<boolean> {
-  //   const headers = new HttpHeaders().set('Content-Type', 'application/json');
-  //   const body = { username, password };
-
-  //   return this.http.post<any>(BASIC_URL + '/login', body, { headers, observe: 'response' }).pipe(
-  //     map((response) => {
-  //       const token = response.headers.get('authorization')?.substring(7);
-  //       const user = response.body;
-
-  //       if (token && user) {
-  //         this.userStorageService.saveToken(token);
-  //         this.userStorageService.saveUser(user);
-  //         return true;
-  //       }
-  //       return false;
-  //     })
-  //   );
-  // }
-
- // AuthService.login method with error handling
-login(username: string, password: string): Observable<boolean> {
-  const headers = new HttpHeaders().set('Content-Type', 'application/json');
-  const body = { username, password };
-
-  return this.http.post<any>(BASIC_URL + '/login', body, { headers, observe: 'response' }).pipe(
-      map((response) => {
-          const token = response.headers.get('authorization')?.substring(7);
-          const user = response.body;
-
-          if (token && user) {
-              this.userStorageService.saveToken(token);
-              this.userStorageService.saveUser(user);
-              return true;
-          }
-          return false;
+  /**
+   * Authenticates the user with the provided credentials
+   * @param email The user's email
+   * @param password The user's password
+   * @returns Observable containing user data and token if successful
+   */
+  login(email: string, password: string): Observable<AuthResponse> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const body = { email, password };
+  
+    return this.http.post<AuthResponse>(BASIC_URL + '/authenticate', body, { headers }).pipe(
+      map(response => {
+        console.log('Login response:', response); // Log the response
+  
+        // Save the token in the auth state service
+        this.authState.setToken(response.token);
+  
+        // Set the user object correctly
+        const user = { role: response.role, userId: response.userId };
+        this.authState.setUser(user);
+  
+        return response; // Return the entire response for further processing if needed
       }),
       catchError((error) => {
-          console.error('Login Error:', error); // Log the error
-          return of(false); // Return Observable of false to handle the error in the component
+        console.error('Login Error:', error); 
+        return throwError('Login failed: invalid credentials');
       })
-  );
-}
+    );
+  }
 
-
+  /**
+   * Sign out the user
+   */
+  signOut(): void {
+    this.authState.clear();
+  }
 }
