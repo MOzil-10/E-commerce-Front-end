@@ -16,7 +16,7 @@ export class AuthStateServiceService {
 
    getToken(): Observable<string | null> {
     return this.tokenSubject.asObservable();
-   }
+  }
 
    getUser(): Observable<any | null> {
     return this.userSubject.asObservable();
