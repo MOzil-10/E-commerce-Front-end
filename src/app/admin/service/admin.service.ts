@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, switchMap, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthStateServiceService } from 'src/app/services/auth/auth-state-service.service';
-
 
 const BASIC_URL = 'http://localhost:8080/';
 
@@ -11,17 +11,15 @@ const BASIC_URL = 'http://localhost:8080/';
 })
 export class AdminService {
 
-
   constructor(
     private http: HttpClient,
     private authState: AuthStateServiceService
-  ) { }
+  ) {}
 
   addCategory(categoryDto: any): Observable<any> {
     return this.createAuthorizationHeader().pipe(
       switchMap(headers => this.http.post(BASIC_URL + 'api/admin/category', categoryDto, { headers })),
       catchError((error) => {
-       
         console.error('Error adding category:', error);
         return throwError(error);
       })
@@ -32,9 +30,8 @@ export class AdminService {
     return this.createAuthorizationHeader().pipe(
       switchMap(headers => this.http.get(BASIC_URL + 'api/admin/categories', { headers })),
       catchError((error) => {
-        
-        console.error('Error adding category:', error);
-        return throwError(error); 
+        console.error('Error fetching categories:', error);
+        return throwError(error);
       })
     );
   }
@@ -43,8 +40,17 @@ export class AdminService {
     return this.createAuthorizationHeader().pipe(
       switchMap(headers => this.http.post(BASIC_URL + 'api/admin/product', productDto, { headers })),
       catchError((error) => {
-       
-        console.error('Error adding category:', error);
+        console.error('Error adding product:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  getAllProducts(): Observable<any> {
+    return this.createAuthorizationHeader().pipe(
+      switchMap(headers => this.http.get(BASIC_URL + 'api/admin/products', { headers })),
+      catchError((error) => {
+        console.error('Error fetching products:', error);
         return throwError(error);
       })
     );
@@ -55,7 +61,4 @@ export class AdminService {
       map(token => new HttpHeaders().set('Authorization', `Bearer ${token}`))
     );
   }
-  
-  
-  
 }

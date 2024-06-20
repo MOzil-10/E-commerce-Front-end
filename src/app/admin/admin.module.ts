@@ -13,12 +13,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { PostCategoryComponent } from './Components/post-category/post-category.component';
 import { PostProductComponent } from './Components/post-product/post-product.component';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDividerModule} from '@angular/material/divider';
+import { AdminDashboardComponent } from './Components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     PostCategoryComponent,
     PostProductComponent,
+    AdminDashboardComponent
 
   ],
   imports: [
@@ -32,6 +35,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatCardModule,
     MatIconModule,
+    MatDividerModule,
     MatSelectModule
 
   ]

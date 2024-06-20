@@ -11,6 +11,7 @@ import { RegisterComponent } from './components/register/register.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDividerModule} from '@angular/material/divider';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -32,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule,
     MatIconModule,
     MatSnackBarModule,
+    MatDividerModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
