@@ -44,8 +44,7 @@ export class LoginComponent implements OnInit {
           this.authStateService.setToken(res.token);
           const user = { role: res.role, userId: res.userId };
           this.authStateService.setUser(user);
-
-          // Check the user role and navigate accordingly
+          
           switch (res.role) {
             case 'ADMIN':
               this.router.navigateByUrl('admin/dashboard');

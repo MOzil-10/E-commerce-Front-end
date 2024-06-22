@@ -1,38 +1,36 @@
-<div class="product_list">
-    <mat-card class="product_card" *ngFor="let product of products">
-      <div class="product_image">
-        <img [src]="product.processedImg" alt="product-image">
+<form [formGroup]="searchProductForm" class="search-form">
+  <div class="col-md-8">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Enter keyword to search" formControlName="title">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit" [disabled]="searchProductForm.invalid">
+          <i class="fa-brands fa-searchengin"></i>
+        </button>
       </div>
-      <div class="product-details">
-        <h2 class="product-name">{{product.name}}</h2>
-        <p class="product-description">{{product.description}}</p>
-  
-        <mat-divider></mat-divider>
-        <div class="product-info">
-          <div class="info-row">
-            <span class="info-label">Category: </span>
-            <span class="info-value">{{product.categoryName}}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Price: </span>
-            <span class="info-value">{{product.price}}</span>
-          </div>
-        </div>
-        <mat-divider></mat-divider>
-        <div class="actions">
-          <button mat-raised-button color="primary" class="update-button" [routerLink]="'/admin/faq' + product.id">
-            FAQ
-          </button>
-
-          <button mat-raised-button color="accent" class="update-button" [routerLink]="'/admin/product' + product.id">
-            Update
-          </button>
-
-          <button mat-raised-button color="warn" class="delete-button">
-            Delete
-          </button>
-        </div>
-      </div>
-    </mat-card>
+    </div>
   </div>
-  
+</form>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let product of products">
+      <div class="card mb-4">
+        <img [src]="product.processedImg" class="card-img-top" alt="product-image">
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">{{product.description}}</p>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">{{product.categoryName}}</span>
+            <span class="text-primary font-weight-bold">{{product.price}}</span>
+          </div>
+          <div class="text-center">
+            <a [routerLink]="'/admin/faq' + product.id" class="btn btn-primary btn-sm mr-2">FAQ</a>
+            <a [routerLink]="'/admin/product' + product.id" class="btn btn-secondary btn-sm mr-2">Update</a>
+            <button class="btn btn-danger btn-sm delete-button">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

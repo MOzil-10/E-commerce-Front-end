@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../service/admin.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -8,20 +9,36 @@ import { AdminService } from '../../service/admin.service';
 })
 export class AdminDashboardComponent implements OnInit {
   products: any[] = [];
+  searchProductForm!: FormGroup;
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private fb:FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.getAllProducts();
+    this.searchProductForm = this.fb.group({
+      title: [null,[Validators.required]]
+    })
   }
 
   getAllProducts() {
     this.products = [];
-    this.adminService.getAllProducts().subscribe( res => {
-      res.forEach((element:any) => {
-        element.processedImg = 'data:image/png;base64,' + element.byteImg;
-        this.products.push(element);
-      });
-    })
+    this.adminService.getAllProducts().subscribe(res => {
+      this.products = res;
+    });
+  }
+
+  submitForm() {
+    this.products = [];
+    const title = this.searchProductForm.get('title')!.value;
+    this.adminService.getAllProductsByName(title).subscribe(res => {
+      this.products = res;
+    });
+  }
+
+  deleteProduct(id:any) {
+
   }
 }

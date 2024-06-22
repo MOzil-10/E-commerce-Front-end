@@ -56,6 +56,16 @@ export class AdminService {
     );
   }
 
+  getAllProductsByName(name:any): Observable<any> {
+    return this.createAuthorizationHeader().pipe(
+      switchMap(headers => this.http.get(BASIC_URL + `api/admin/search/${name}`, { headers })),
+      catchError((error) => {
+        console.error('Error fetching products:', error);
+        return throwError(error);
+      })
+    );
+  }
+
   private createAuthorizationHeader(): Observable<HttpHeaders> {
     return this.authState.getToken().pipe(
       map(token => new HttpHeaders().set('Authorization', `Bearer ${token}`))
